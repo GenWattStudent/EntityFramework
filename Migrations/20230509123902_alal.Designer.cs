@@ -12,8 +12,8 @@ using Rekrutacja.Context;
 namespace Rekrutacja.Migrations
 {
     [DbContext(typeof(RekrutacjaContext))]
-    [Migration("20230509103855_Migracja-Rekrutacja")]
-    partial class MigracjaRekrutacja
+    [Migration("20230509123902_alal")]
+    partial class alal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,48 +79,39 @@ namespace Rekrutacja.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DokumentId"));
 
                     b.Property<DateTime>("DataAktualizacjiStatusu")
-                        .HasColumnType("date")
-                        .HasColumnName("data_aktualizacji_statusu");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataPrzesłania")
-                        .HasColumnType("date")
-                        .HasColumnName("data_przesłania");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("KandydatId")
-                        .HasColumnType("int")
-                        .HasColumnName("kandydat_id");
+                        .HasColumnType("int");
 
                     b.Property<string>("Komentarz")
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasColumnName("komentarz");
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("PracownicyId")
-                        .HasColumnType("int")
-                        .HasColumnName("pracownicy_id");
+                        .HasColumnType("int");
 
                     b.Property<string>("Rodzaj")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("rodzaj");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("status");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Uwagi")
                         .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)")
-                        .HasColumnName("uwagi");
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("ŚcieżkaDokumentu")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("ścieżka_dokumentu");
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("DokumentId");
 
@@ -203,9 +194,8 @@ namespace Rekrutacja.Migrations
 
                     b.HasKey("KandydatId");
 
-                    b.HasIndex("KierunekId");
-
-                    b.HasIndex("UżytkownikId");
+                    b.HasIndex("KierunekId")
+                        .IsUnique();
 
                     b.ToTable("Kandydaci");
                 });
@@ -253,11 +243,8 @@ namespace Rekrutacja.Migrations
             modelBuilder.Entity("Rekrutacja.Models.Pracownicy", b =>
                 {
                     b.Property<int>("PracownikId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("pracownik_id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PracownikId"));
 
                     b.Property<string>("Departament")
                         .IsRequired()
@@ -282,8 +269,6 @@ namespace Rekrutacja.Migrations
                         .HasColumnName("użytkownik_id");
 
                     b.HasKey("PracownikId");
-
-                    b.HasIndex("UżytkownikId");
 
                     b.ToTable("Pracownicy");
                 });
@@ -331,11 +316,8 @@ namespace Rekrutacja.Migrations
             modelBuilder.Entity("Rekrutacja.Models.Użytkownicy", b =>
                 {
                     b.Property<int>("UżytkownikId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("użytkownik_id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UżytkownikId"));
 
                     b.Property<DateTime>("DataUrodzenia")
                         .HasColumnType("date")
@@ -390,7 +372,7 @@ namespace Rekrutacja.Migrations
             modelBuilder.Entity("Rekrutacja.Models.Adresy", b =>
                 {
                     b.HasOne("Rekrutacja.Models.Użytkownicy", "Użytkownik")
-                        .WithMany("Adresies")
+                        .WithMany("Adresy")
                         .HasForeignKey("UżytkownikId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -400,19 +382,19 @@ namespace Rekrutacja.Migrations
 
             modelBuilder.Entity("Rekrutacja.Models.Dokumenty", b =>
                 {
-                    b.HasOne("Rekrutacja.Models.Kandydaci", "Kandydat")
-                        .WithMany("DokumentyKandydats")
+                    b.HasOne("Rekrutacja.Models.Kandydaci", "Kandydaci")
+                        .WithMany("Dokumenty")
                         .HasForeignKey("KandydatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rekrutacja.Models.Kandydaci", "Pracownicy")
-                        .WithMany("DokumentyPracownicies")
+                    b.HasOne("Rekrutacja.Models.Pracownicy", "Pracownicy")
+                        .WithMany("DokumentyPracowników")
                         .HasForeignKey("PracownicyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Kandydat");
+                    b.Navigation("Kandydaci");
 
                     b.Navigation("Pracownicy");
                 });
@@ -420,7 +402,7 @@ namespace Rekrutacja.Migrations
             modelBuilder.Entity("Rekrutacja.Models.Egzaminy", b =>
                 {
                     b.HasOne("Rekrutacja.Models.Kandydaci", "Kandydat")
-                        .WithMany("Egzaminies")
+                        .WithMany("Egzaminy")
                         .HasForeignKey("KandydatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -431,29 +413,22 @@ namespace Rekrutacja.Migrations
             modelBuilder.Entity("Rekrutacja.Models.Kandydaci", b =>
                 {
                     b.HasOne("Rekrutacja.Models.Kierunki", "Kierunek")
-                        .WithMany("Kandydacis")
-                        .HasForeignKey("KierunekId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Rekrutacja.Models.Użytkownicy", "Użytkownik")
-                        .WithMany("Kandydacis")
-                        .HasForeignKey("UżytkownikId")
+                        .WithOne("Kandydaci")
+                        .HasForeignKey("Rekrutacja.Models.Kandydaci", "KierunekId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Kierunek");
-
-                    b.Navigation("Użytkownik");
                 });
 
             modelBuilder.Entity("Rekrutacja.Models.Pracownicy", b =>
                 {
                     b.HasOne("Rekrutacja.Models.Użytkownicy", "Użytkownik")
-                        .WithMany("Pracownicies")
-                        .HasForeignKey("UżytkownikId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithOne("Pracownicy")
+                        .HasForeignKey("Rekrutacja.Models.Pracownicy", "PracownikId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("FK_Dokumenty_Pracownicy_PracownicyI");
 
                     b.Navigation("Użytkownik");
                 });
@@ -461,7 +436,7 @@ namespace Rekrutacja.Migrations
             modelBuilder.Entity("Rekrutacja.Models.Płatności", b =>
                 {
                     b.HasOne("Rekrutacja.Models.Kandydaci", "Kandydat")
-                        .WithMany("Płatnościs")
+                        .WithMany("Płatności")
                         .HasForeignKey("KandydatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -469,29 +444,46 @@ namespace Rekrutacja.Migrations
                     b.Navigation("Kandydat");
                 });
 
+            modelBuilder.Entity("Rekrutacja.Models.Użytkownicy", b =>
+                {
+                    b.HasOne("Rekrutacja.Models.Kandydaci", "Kandydaci")
+                        .WithOne("Użytkownik")
+                        .HasForeignKey("Rekrutacja.Models.Użytkownicy", "UżytkownikId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Kandydaci");
+                });
+
             modelBuilder.Entity("Rekrutacja.Models.Kandydaci", b =>
                 {
-                    b.Navigation("DokumentyKandydats");
+                    b.Navigation("Dokumenty");
 
-                    b.Navigation("DokumentyPracownicies");
+                    b.Navigation("Egzaminy");
 
-                    b.Navigation("Egzaminies");
+                    b.Navigation("Płatności");
 
-                    b.Navigation("Płatnościs");
+                    b.Navigation("Użytkownik")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rekrutacja.Models.Kierunki", b =>
                 {
-                    b.Navigation("Kandydacis");
+                    b.Navigation("Kandydaci")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rekrutacja.Models.Pracownicy", b =>
+                {
+                    b.Navigation("DokumentyPracowników");
                 });
 
             modelBuilder.Entity("Rekrutacja.Models.Użytkownicy", b =>
                 {
-                    b.Navigation("Adresies");
+                    b.Navigation("Adresy");
 
-                    b.Navigation("Kandydacis");
-
-                    b.Navigation("Pracownicies");
+                    b.Navigation("Pracownicy")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

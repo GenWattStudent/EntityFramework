@@ -44,12 +44,9 @@ public partial class Użytkownicy
     [Column("data_urodzenia", TypeName = "date")]
     public DateTime DataUrodzenia { get; set; }
 
-    [InverseProperty("Użytkownik")]
-    public virtual ICollection<Adresy> Adresies { get; set; } = new List<Adresy>();
+    public virtual ICollection<Adresy> Adresy { get; set; } = new List<Adresy>();
 
-    [InverseProperty("Użytkownik")]
-    public virtual ICollection<Kandydaci> Kandydacis { get; set; } = new List<Kandydaci>();
+    public virtual Kandydaci Kandydaci { get; set; } = null;
 
-    [InverseProperty("Użytkownik")]
-    public virtual ICollection<Pracownicy> Pracownicies { get; set; } = new List<Pracownicy>();
+    public virtual Pracownicy Pracownicy { get; set; } = null;
 }

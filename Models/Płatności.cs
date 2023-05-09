@@ -30,7 +30,5 @@ public partial class Płatności
     [StringLength(20)]
     public string Metoda { get; set; } = null!;
 
-    [ForeignKey("KandydatId")]
-    [InverseProperty("Płatnościs")]
-    public virtual Kandydaci Kandydat { get; set; } = null!;
+    public virtual Kandydaci Kandydat { get; set; }
 }

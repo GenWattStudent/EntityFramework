@@ -32,7 +32,5 @@ public partial class Adresy
     [StringLength(10)]
     public string Numer { get; set; } = null!;
 
-    [ForeignKey("UżytkownikId")]
-    [InverseProperty("Adresies")]
-    public virtual Użytkownicy Użytkownik { get; set; } = null!;
+    public virtual Użytkownicy Użytkownik { get; set; }
 }

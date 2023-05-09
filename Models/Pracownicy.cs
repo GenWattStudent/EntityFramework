@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-
 namespace Rekrutacja.Models;
 
 [Table("Pracownicy")]
@@ -28,7 +24,6 @@ public partial class Pracownicy
     [StringLength(30)]
     public string Obowiązki { get; set; } = null!;
 
-    [ForeignKey("UżytkownikId")]
-    [InverseProperty("Pracownicies")]
-    public virtual Użytkownicy Użytkownik { get; set; } = null!;
+    public virtual Użytkownicy Użytkownik { get; set; }
+    public virtual ICollection<Dokumenty> DokumentyPracowników { get; set; } = new List<Dokumenty>();
 }

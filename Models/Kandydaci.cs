@@ -33,23 +33,13 @@ public partial class Kandydaci
     [Column("data_aktualizacji_statusu", TypeName = "date")]
     public DateTime DataAktualizacjiStatusu { get; set; }
 
-    [InverseProperty("Kandydat")]
-    public virtual ICollection<Dokumenty> DokumentyKandydats { get; set; } = new List<Dokumenty>();
+    public virtual ICollection<Dokumenty> Dokumenty { get; set; } = new List<Dokumenty>();
 
-    [InverseProperty("Pracownicy")]
-    public virtual ICollection<Dokumenty> DokumentyPracownicies { get; set; } = new List<Dokumenty>();
+    public virtual ICollection<Egzaminy> Egzaminy { get; set; } = new List<Egzaminy>();
 
-    [InverseProperty("Kandydat")]
-    public virtual ICollection<Egzaminy> Egzaminies { get; set; } = new List<Egzaminy>();
+    public virtual Kierunki Kierunek { get; set; }
 
-    [ForeignKey("KierunekId")]
-    [InverseProperty("Kandydacis")]
-    public virtual Kierunki Kierunek { get; set; } = null!;
+    public virtual ICollection<Płatności> Płatności { get; set; } = new List<Płatności>();
 
-    [InverseProperty("Kandydat")]
-    public virtual ICollection<Płatności> Płatnościs { get; set; } = new List<Płatności>();
-
-    [ForeignKey("UżytkownikId")]
-    [InverseProperty("Kandydacis")]
-    public virtual Użytkownicy Użytkownik { get; set; } = null!;
+    public virtual Użytkownicy Użytkownik { get; set; }
 }

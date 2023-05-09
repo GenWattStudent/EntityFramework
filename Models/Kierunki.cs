@@ -31,6 +31,5 @@ public partial class Kierunki
     [Column("liczba_miejsc")]
     public int LiczbaMiejsc { get; set; }
 
-    [InverseProperty("Kierunek")]
-    public virtual ICollection<Kandydaci> Kandydacis { get; set; } = new List<Kandydaci>();
+    public virtual Kandydaci Kandydaci { get; set; } = null;
 }

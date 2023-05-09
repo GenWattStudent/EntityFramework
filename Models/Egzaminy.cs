@@ -26,7 +26,5 @@ public partial class Egzaminy
     [Column("data_przystąpienia", TypeName = "date")]
     public DateTime DataPrzystąpienia { get; set; }
 
-    [ForeignKey("KandydatId")]
-    [InverseProperty("Egzaminies")]
-    public virtual Kandydaci Kandydat { get; set; } = null!;
+    public virtual Kandydaci Kandydat { get; set; }
 }

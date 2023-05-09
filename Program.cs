@@ -13,7 +13,7 @@ namespace Rekrutacja
 
                 foreach (var u in użytkownicy)
                 {
-                    System.Console.WriteLine($"Imię: {u.Imię}, Nazwisko: {u.Nazwisko}, Email: {u.Email}, Pesel: {u.Pesel}");
+                    Console.WriteLine($"Imię: {u.Imię}, Nazwisko: {u.Nazwisko}, Email: {u.Email}, Pesel: {u.Pesel}");
                 }
             }
 
